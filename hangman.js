@@ -3,6 +3,7 @@ const Hangman = function(word, guessesAllowed) {
   this.guessesAllowed = guessesAllowed;
   this.lettersArr = word.toLowerCase().split('');
   this.guessedLetters = [];
+
   this.status = 'playing';
 };
 
@@ -36,17 +37,31 @@ Hangman.prototype.makeGuessed = function(guess) {
     this.guessesAllowed --;
   }
 
+  // call function that calculate the status everytime user guesses
+  this.calculateStatus();
+
 
 
 }
 
-// Hangman.prototype.calculateStatus = function() {
-//   if (this.guessesAllowed === 0) {
-//     status = 'failed';
-//     console.log(status);
-//   }
+Hangman.prototype.calculateStatus = function() {
+  this.allPass = true;
+  this.lettersArr.forEach((letter) => {
+    if (!(this.guessedLetters.includes(letter))) {
+      allPass = false;
+    } else {
+      allPass = true;
+    }
+  })
 
 
-// }
+
+  if (this.allPass === true) {
+    this.status ='finished';
+  } else if (this.guessesAllowed === 0) {
+    this.status = 'failed';
+  }
+
+}
 
 
