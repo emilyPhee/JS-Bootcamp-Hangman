@@ -15,7 +15,6 @@ const guessesEl = document.querySelector('.remaining-guesses');
 puzzleEl.textContent = game1.getPuzzle();
 guessesEl.textContent = `you have ${game1.guessesAllowed} guesse(s) left`;
 
-console.log(game1.status);
 
 
 window.addEventListener('keypress', function(e) {

@@ -45,21 +45,23 @@ Hangman.prototype.makeGuessed = function(guess) {
 }
 
 Hangman.prototype.calculateStatus = function() {
-  this.allPass = true;
+  let allPass = true;
   this.lettersArr.forEach((letter) => {
     if (!(this.guessedLetters.includes(letter))) {
       allPass = false;
-    } else {
-      allPass = true;
     }
   })
 
 
 
-  if (this.allPass === true) {
+  if (allPass) {
     this.status ='finished';
-  } else if (this.guessesAllowed === 0) {
-    this.status = 'failed';
+  } else {
+    if (this.guessesAllowed === 0) {
+      this.status = 'failed';
+    } else {
+      this.status = 'playing';
+    }
   }
 
 }
