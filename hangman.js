@@ -3,7 +3,6 @@ const Hangman = function(word, guessesAllowed) {
   this.guessesAllowed = guessesAllowed;
   this.lettersArr = word.toLowerCase().split('');
   this.guessedLetters = [];
-
   this.status = 'playing';
 };
 
@@ -18,6 +17,7 @@ Hangman.prototype.getPuzzle = function() {
       puzzle += '*';
     }
   });
+
   return puzzle;
 }
 
@@ -27,20 +27,31 @@ Hangman.prototype.getPuzzle = function() {
 // character >= 'A'
 Hangman.prototype.makeGuessed = function(guess) {
   guess = guess.toLowerCase();
+  if (this.status === 'playing') {
+    if (!(guess >= 'A')) {return} // do nothing if it's not a chracter
+    if (this.guessedLetters.includes(guess)) {return} // do nothing if letter is already guessed
+    if (this.lettersArr.includes(guess)) {
+      this.guessedLetters.push(guess);
+    } else {
+      this.guessedLetters.push(guess);
+      this.guessesAllowed --;
+    }
   
-  if (!(guess >= 'A')) {return} // do nothing if it's not a chracter
-  if (this.guessedLetters.includes(guess)) {return} // do nothing if letter is already guessed
-  if (this.lettersArr.includes(guess)) {
-    this.guessedLetters.push(guess);
-  } else {
-    this.guessedLetters.push(guess);
-    this.guessesAllowed --;
+    // call function that calculate the status everytime user guesses
+    this.calculateStatus();
   }
-
-  // call function that calculate the status everytime user guesses
-  this.calculateStatus();
+}
 
 
+// Create a status message
+Hangman.prototype.createStatusMessage = function() {
+  if (this.status === 'playing') {
+    return `Guesses left: ${this.guessesAllowed}`;
+  } else if (this.status === 'failed') {
+    return `Nice try! The word was "${this.word}".`;
+  } else {
+    return 'Great work! you guessed the word.';
+  }
 
 }
 
@@ -51,8 +62,6 @@ Hangman.prototype.calculateStatus = function() {
       allPass = false;
     }
   })
-
-
 
   if (allPass) {
     this.status ='finished';
@@ -65,5 +74,6 @@ Hangman.prototype.calculateStatus = function() {
   }
 
 }
+
 
 
